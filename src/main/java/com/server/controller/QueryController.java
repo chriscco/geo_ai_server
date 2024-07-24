@@ -31,7 +31,7 @@ public class QueryController {
     }
     @PostMapping("/ai/query")
     public String query(@RequestBody QueryRequest request)
-            throws IOException, InterruptedException {
+            throws IOException {
         PythonCaller pythonCaller = new PythonCaller();
         String query = request.getQuery();
         String[] result = pythonCaller.call(interpreter_path, script_path, query);
