@@ -18,6 +18,8 @@ public class PythonCaller {
         while((line = br.readLine()) != null) buf.append(line);
 
         return buf.toString().split(";");
-
     }
 }
+
+// CITE:
+// https://github.com/OujaKivi/upload-callpython-springboot/blob/master/src/main/java/com/wesley/uploadingfiles/DoPred.java
