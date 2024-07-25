@@ -25,20 +25,41 @@ public class QueryController {
     public void setEnv(Environment env) {
         this.env = env;
     }
+
+    /**
+     * default home page
+     * @return index view
+     */
     @GetMapping("/ai")
     public String getIndex() {
-        interpreter_path = env.getProperty("path.interpreter_path");
-        script_path = env.getProperty("path.script_path");
         return "index";
     }
+
+    /**
+     *
+     * @param request request body
+     * @param model spring mvc model
+     * @return result view
+     * @throws IOException e
+     * @throws InterruptedException e
+     */
     @PostMapping("/ai/query")
     public String query(@RequestBody QueryRequest request, Model model)
             throws IOException, InterruptedException {
+        path_setup();
         PythonCaller pythonCaller = new PythonCaller();
         String query = request.getQuery();
         String[] results = pythonCaller.call(interpreter_path, script_path, query);
         model.addAttribute("results", results);
         return "search_result_view";
+    }
+
+    /**
+     * Retrieve paths (paths to python and python script) from properties file
+     */
+    public void path_setup() {
+        interpreter_path = env.getProperty("path.interpreter_path");
+        script_path = env.getProperty("path.script_path");
     }
 }
 
