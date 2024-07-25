@@ -3,6 +3,14 @@ package com.server;
 import java.io.*;
 
 public class PythonCaller {
+
+    /**
+     * Call the python file model.py
+     * @param interpreter_path python 3 path
+     * @param script_path model.py path
+     * @param query query
+     * @return search hits
+     */
     public String[] call(String interpreter_path, String script_path, String query) {
         try {
             String[] cmd = new String[]{interpreter_path, script_path, query};
@@ -14,10 +22,9 @@ public class PythonCaller {
                     new BufferedReader(new InputStreamReader(pr.getInputStream()));
 
             StringBuilder buf = new StringBuilder();
-            String line = null;
+            String line;
             while((line = reader.readLine()) != null) {
                 buf.append(line).append('\n');
-                System.out.println("line: " + line);
             }
 
             while ((line = stdError.readLine()) != null) {
