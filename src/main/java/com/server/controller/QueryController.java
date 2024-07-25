@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Controller
 @PropertySource(value = "classpath:config.properties")
@@ -30,12 +32,13 @@ public class QueryController {
         return "index";
     }
     @PostMapping("/ai/query")
-    public String query(@RequestBody QueryRequest request)
-            throws IOException {
+    public String query(@RequestBody QueryRequest request, Model model)
+            throws IOException, InterruptedException {
         PythonCaller pythonCaller = new PythonCaller();
         String query = request.getQuery();
-        String[] result = pythonCaller.call(interpreter_path, script_path, query);
-        return null;
+        String[] results = pythonCaller.call(interpreter_path, script_path, query);
+        model.addAttribute("results", results);
+        return "search_result_view";
     }
 }
 

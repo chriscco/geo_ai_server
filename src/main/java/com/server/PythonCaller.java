@@ -1,22 +1,38 @@
 package com.server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class PythonCaller {
-    public String[] call(String interpreter_path, String script_path, String query) throws IOException {
-        String cmd = interpreter_path + " " + script_path + " " + query;
-        Process pr = Runtime.getRuntime().exec(new String[]{cmd});
+    public String[] call(String interpreter_path, String script_path, String query) {
+        try {
+            String[] cmd = new String[]{interpreter_path, script_path, query};
+            Process pr = Runtime.getRuntime().exec(cmd);
 
-        InputStream is = pr.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        StringBuilder buf = new StringBuilder();
-        String line = null;
-        while((line = br.readLine()) != null) buf.append(line);
+            BufferedReader stdError =
+                    new BufferedReader(new InputStreamReader(pr.getErrorStream()));
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(pr.getInputStream()));
 
-        return buf.toString().split(";");
+            StringBuilder buf = new StringBuilder();
+            String line = null;
+            while((line = reader.readLine()) != null) {
+                buf.append(line).append('\n');
+                System.out.println("line: " + line);
+            }
+
+            while ((line = stdError.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            int exitValue = pr.waitFor();
+            if (exitValue != 0) {
+                System.out.println("Abnormal execution, exit code: " + exitValue);
+            }
+            return buf.toString().split("\n");
+        } catch (IOException | InterruptedException exception) {
+            System.out.println("PythonCaller call(): " + exception);
+        }
+        return null;
     }
 }
 
