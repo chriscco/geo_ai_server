@@ -10,13 +10,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class GeoaiServerApplication {
+    /**
+     *
+     * @param interceptors **ignore IDEA warnings**
+     * @return r
+     */
     @Bean
     WebMvcConfigurer createWebMvcConfigurer(@Autowired HandlerInterceptor[] interceptors) {
         return new WebMvcConfigurer() {
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
-                registry.addResourceHandler("/static/**").
-                        addResourceLocations("classpath:/static/");
+                registry.addResourceHandler("/templates/**").
+                        addResourceLocations("classpath:/templates/");
             }
         };
     }

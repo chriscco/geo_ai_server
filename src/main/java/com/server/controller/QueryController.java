@@ -5,15 +5,17 @@ import com.server.entity.QueryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-@Controller
+@RestController
 @PropertySource(value = "classpath:config.properties")
 public class QueryController {
     private Environment env;
@@ -27,30 +29,29 @@ public class QueryController {
 
     /**
      * default home page
-     * @return index view
+     * @return in json
      */
     @GetMapping("/ai")
-    public String getIndex() {
-        return "index";
+    public ResponseEntity<String> getIndex() {
+        return ResponseEntity.ok("This is home page");
     }
 
     /**
      *
      * @param request request body
-     * @param model spring mvc model
-     * @return result view
+     * @return result in json
      * @throws IOException e
      * @throws InterruptedException e
      */
     @PostMapping("/ai/query")
-    public String query(@RequestBody QueryRequest request, Model model)
+    public ResponseEntity<List<String>> query(@RequestBody QueryRequest request)
             throws IOException, InterruptedException {
         path_setup();
         PythonCaller pythonCaller = new PythonCaller();
         String query = request.getQuery();
-        String[] results = pythonCaller.call(interpreter_path, script_path, query);
-        model.addAttribute("results", results);
-        return "search_result_view";
+        List<String> result = new ArrayList<>
+                (pythonCaller.call(interpreter_path, script_path, query));
+        return ResponseEntity.ok(result);
     }
 
     /**

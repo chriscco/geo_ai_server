@@ -1,6 +1,8 @@
 package com.server;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PythonCaller {
 
@@ -11,7 +13,7 @@ public class PythonCaller {
      * @param query query
      * @return search hits
      */
-    public String[] call(String interpreter_path, String script_path, String query) {
+    public List<String> call(String interpreter_path, String script_path, String query) {
         try {
             String[] cmd = new String[]{interpreter_path, script_path, query};
             Process pr = Runtime.getRuntime().exec(cmd);
@@ -21,12 +23,12 @@ public class PythonCaller {
             BufferedReader reader =
                     new BufferedReader(new InputStreamReader(pr.getInputStream()));
 
-            StringBuilder buf = new StringBuilder();
+            List<String> result = new ArrayList<>();
             String line;
             while((line = reader.readLine()) != null) {
-                buf.append(line).append('\n');
+                result.add(line);
             }
-
+            // print error message from python
             while ((line = stdError.readLine()) != null) {
                 System.out.println(line);
             }
@@ -35,7 +37,7 @@ public class PythonCaller {
             if (exitValue != 0) {
                 System.out.println("Abnormal execution, exit code: " + exitValue);
             }
-            return buf.toString().split("\n");
+            return result;
         } catch (IOException | InterruptedException exception) {
             System.out.println("PythonCaller call(): " + exception);
         }
