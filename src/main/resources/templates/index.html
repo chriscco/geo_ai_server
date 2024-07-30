@@ -1,10 +1,104 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>GEO AI</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEO AI</title>
+    <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+            }
+            h1 {
+                color: #333;
+            }
+            h3 {
+                color: #666;
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            input[type="text"] {
+                padding: 10px;
+                width: 300px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+            button {
+                padding: 10px 20px;
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+            #response {
+                margin-top: 20px;
+                padding: 10px;
+                width: 300px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                background-color: #99ff99;
+                display: none; /* Initially hidden */
+            }
+        </style>
+</head>
+<body>
+<h1>GEO AI</h1>
+<h3>Input query:</h3>
+<form id="queryForm">
+    <input type="text" id="queryInput" name="query" placeholder="Enter your query here" required>
+    <button type="submit">Submit</button>
+</form>
 
-    <body>
-        <h1>GEO AI</h1>
-    </body>
+<div id="response"></div>
+
+<script>
+            document.getElementById('queryForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the form from submitting the traditional way
+                const query = document.getElementById('queryInput').value;
+
+                fetch('/ai/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query: query })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const responseDiv = document.getElementById('response');
+                    responseDiv.innerHTML = ''; // Clear previous response
+
+                    if (data.length > 0) {
+                        responseDiv.style.display = 'block'; // Show the response div
+
+                        data.forEach(item => {
+                            const p = document.createElement('p');
+                            p.textContent = item;
+                            responseDiv.appendChild(p);
+                        });
+                    } else {
+                        responseDiv.style.display = 'none'; // Hide the response div if no data
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        </script>
+</body>
 </html>
