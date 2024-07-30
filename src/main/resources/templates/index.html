@@ -52,7 +52,7 @@
                 border: 1px solid #ccc;
                 border-radius: 4px;
                 background-color: #99ff99;
-                display: none; /* Initially hidden */
+                display: none;
             }
         </style>
 </head>
@@ -68,7 +68,7 @@
 
 <script>
             document.getElementById('queryForm').addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent the form from submitting the traditional way
+                event.preventDefault();
                 const query = document.getElementById('queryInput').value;
 
                 fetch('/ai/query', {
@@ -81,10 +81,10 @@
                 .then(response => response.json())
                 .then(data => {
                     const responseDiv = document.getElementById('response');
-                    responseDiv.innerHTML = ''; // Clear previous response
+                    responseDiv.innerHTML = '';
 
                     if (data.length > 0) {
-                        responseDiv.style.display = 'block'; // Show the response div
+                        responseDiv.style.display = 'block';
 
                         data.forEach(item => {
                             const p = document.createElement('p');
@@ -92,7 +92,7 @@
                             responseDiv.appendChild(p);
                         });
                     } else {
-                        responseDiv.style.display = 'none'; // Hide the response div if no data
+                        responseDiv.style.display = 'none';
                     }
                 })
                 .catch(error => {
