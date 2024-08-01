@@ -20,7 +20,6 @@ public class QueryController {
     private Environment env;
     private static String interpreter_path = null;
     private static String script_path = null;
-    private static String upload_file_path = null;
     private boolean ifUpload = false;
 
     @Autowired
@@ -41,12 +40,9 @@ public class QueryController {
      *
      * @param request request body
      * @return result in json
-     * @throws IOException e
-     * @throws InterruptedException e
      */
     @PostMapping("/ai/query")
-    public ResponseEntity<List<String>> query(@RequestBody QueryRequest request)
-            throws IOException, InterruptedException {
+    public ResponseEntity<List<String>> query(@RequestBody QueryRequest request){
         path_setup();
         PythonCaller pythonCaller = new PythonCaller();
         String query = request.getQuery();
@@ -70,7 +66,7 @@ public class QueryController {
     @PostMapping("/ai/upload")
     public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) throws IOException {
         ifUpload = true;
-        upload_file_path = env.getProperty("path.upload_file_path");
+        String upload_file_path = env.getProperty("path.upload_file_path");
         assert upload_file_path != null;
         File dir = new File(upload_file_path);
         file.transferTo(new File(dir + File.separator + "upload.pdf"));
