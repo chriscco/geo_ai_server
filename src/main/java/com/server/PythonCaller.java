@@ -13,11 +13,11 @@ public class PythonCaller {
      * @param query query
      * @return search hits
      */
-    public List<String> call(String interpreter_path, String script_path, String query) {
+    public List<String> call(String interpreter_path, String script_path, String query,
+                                    boolean ifUpload) {
         try {
-            String[] cmd = new String[]{interpreter_path, script_path, query};
+            String[] cmd = new String[]{interpreter_path, script_path, query, String.valueOf(ifUpload)};
             Process pr = Runtime.getRuntime().exec(cmd);
-
             BufferedReader stdError =
                     new BufferedReader(new InputStreamReader(pr.getErrorStream()));
             BufferedReader reader =
