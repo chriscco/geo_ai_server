@@ -1,7 +1,8 @@
 package com.server.controller;
 
-import com.server.PythonCaller;
+import com.server.utils.PythonCaller;
 import com.server.entity.QueryRequest;
+import com.server.entity.QueryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -43,13 +44,15 @@ public class QueryController {
      * @return result in json
      */
     @PostMapping("/ai/query")
-    public ResponseEntity<List<String>> query(@RequestBody QueryRequest request){
+    public ResponseEntity<QueryResponse> query(@RequestBody QueryRequest request){
         path_setup();
         PythonCaller pythonCaller = new PythonCaller();
         String query = request.getQuery();
         List<String> result = new ArrayList<>
                 (pythonCaller.call(interpreter_path, script_path, query, ifUpload));
-        return ResponseEntity.ok(result);
+        QueryResponse response = new QueryResponse();
+        response.setContent(result.toString());
+        return ResponseEntity.ok(response);
     }
     /**
      * Retrieve paths (paths to python and python script) from properties file
