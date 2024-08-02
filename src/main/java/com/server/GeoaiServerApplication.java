@@ -20,8 +20,8 @@ public class GeoaiServerApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
-                registry.addResourceHandler("/templates/**").
-                        addResourceLocations("classpath:/templates/");
+                registry.addResourceHandler("/frontend/**").
+                        addResourceLocations("classpath:/frontend/");
             }
         };
     }
