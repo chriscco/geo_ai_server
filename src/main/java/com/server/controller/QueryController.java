@@ -35,7 +35,7 @@ public class QueryController {
      */
     @GetMapping("/ai")
     public ModelAndView getIndex() {
-        return new ModelAndView("index");
+        return new ModelAndView("index_new");
     }
 
     /**
@@ -43,15 +43,15 @@ public class QueryController {
      * @param request request body
      * @return result in json
      */
-    @PostMapping("/ai/query")
+    @PostMapping(value = "/ai/query", consumes = "application/json")
     public ResponseEntity<QueryResponse> query(@RequestBody QueryRequest request){
         path_setup();
         PythonCaller pythonCaller = new PythonCaller();
         String query = request.getQuery();
-        List<String> result = new ArrayList<>
-                (pythonCaller.call(interpreter_path, script_path, query, ifUpload));
+        String result = pythonCaller.call(interpreter_path, script_path, query, ifUpload).toString();
         QueryResponse response = new QueryResponse();
-        response.setContent(result.toString());
+        response.setContent(result);
+        System.out.println(response.getContent());
         return ResponseEntity.ok(response);
     }
     /**

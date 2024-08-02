@@ -13,9 +13,10 @@ public class PythonCaller {
      * @param query query
      * @return search hits
      */
-    public List<String> call(String interpreter_path, String script_path, String query,
+    public StringBuilder call(String interpreter_path, String script_path, String query,
                                     boolean ifUpload) {
         try {
+            StringBuilder result = new StringBuilder();
             String[] cmd = new String[]{interpreter_path, script_path, query, String.valueOf(ifUpload)};
             Process pr = Runtime.getRuntime().exec(cmd);
             BufferedReader stdError =
@@ -23,10 +24,9 @@ public class PythonCaller {
             BufferedReader reader =
                     new BufferedReader(new InputStreamReader(pr.getInputStream()));
 
-            List<String> result = new ArrayList<>();
             String line;
             while((line = reader.readLine()) != null) {
-                result.add(line);
+                result.append(line);
             }
             // print error message from python
             while ((line = stdError.readLine()) != null) {
