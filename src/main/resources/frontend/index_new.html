@@ -151,7 +151,7 @@
                     addAIMessage(res.content);
                     chat_btn.attr('disabled', false);
                 },
-                error: function (response) {
+                error: function () {
                     addAIMessage(`<span>Error Encountered</span>`);
                     chat_btn.attr('disabled', false);
                 }
