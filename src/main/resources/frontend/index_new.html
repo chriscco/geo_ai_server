@@ -58,16 +58,20 @@
     }
 
     .title {
-        flex: 0 1 45px;
+        display: flex;
+        align-items: flex-start;
         position: relative;
         z-index: 2;
         background: rgba(0, 0, 0, 0.2);
-        color: #949494;
+        color: #fff;
         text-align: left;
         padding: 10px 10px 10px 50px;
 
         border-top-left-radius: 25px;
         border-top-right-radius: 25px;
+
+        justify-content: space-between;
+
     }
     h1 {
         font-size: 25px;
@@ -175,8 +179,43 @@
         }
     }
 
-    .message-bubble p {
+    .upload-form {
+        position: relative;
+        right: 20px;
+        float: right;
+
+        width: 35%;
+
+        & .upload-button {
+            text-align: center;
+
+            background: #04AA6D;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 20px;
+            width: 28%;
+            float: right;
+
+            padding: 4px;
+        }
+        & .upload-file {
+            display: none;
+        }
+        & label {
+            text-align: center;
+            border-radius: 25px;
+            background-color: #333333;
+            font-size: 20px;
+
+            padding: 4px;
+            width: 35%
+        }
+        & label:hover {
+            cursor: pointer;
+        }
     }
+
 </style>
 <body>
     <div>
@@ -185,6 +224,12 @@
                 <div class="area">
                     <div class="title">
                         <h1>GeoAI Assistant</h1>
+                        <form class="upload-form" enctype="multipart/form-data" method="POST" action="/ai/upload">
+                            <label> Choose File
+                                <input class="upload-file" type="file" name="file" />
+                            </label>
+                            <input class="upload-button" type="submit" value="UPLOAD" />
+                        </form>
                     </div>
                     <div id="chat_window"></div>
                     <div class="input-group input">
