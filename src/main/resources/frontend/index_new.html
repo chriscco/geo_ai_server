@@ -228,7 +228,7 @@
                             <label> Choose File
                                 <input class="upload-file" type="file" name="file" />
                             </label>
-                            <input class="upload-button" type="submit" value="UPLOAD" />
+                            <input class="upload-button" type="button" value="UPLOAD" />
                         </form>
                     </div>
                     <div id="chat_window"></div>
@@ -254,6 +254,7 @@
         let chat_window = $('#chat_window');
         let chat_btn = $('#chat_btn');
         let chat_input = $('#chat_input');
+        let file_btn = $('.upload-button');
 
         function addUserMessage(query) {
             let messageElement =
@@ -296,11 +297,36 @@
             })
         });
 
+        file_btn.click(function () {
+            let formData = new FormData();
+            let file = $('.upload-file')[0].files[0];
+            formData.append('file', file);
+
+            $.ajax({
+                url: '/ai/upload',
+                method: 'post',
+                dataType: 'json',
+                contentType: false, // must have
+                processData: false, // must have
+                data: formData,
+                success: function (res) {
+                    console.info(res);
+                    addAIMessage("Upload Success!");
+                },
+                error: function (res) {
+                    console.info(res);
+                    addAIMessage("Upload Success!");
+                },
+            })
+        });
+
+
+
         $(window).on('keydown', function (e) {
             if (e.which === 13) {
                 chat_btn.click();
             }
-        })
+        });
     });
 </script>
 </html>
