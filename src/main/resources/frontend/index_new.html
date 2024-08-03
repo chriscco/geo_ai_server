@@ -33,7 +33,6 @@
         height: 100%;
         top: 0;
         left: 0;
-        background: url("../static/boliviainteligente-g4iNRGDmuoY-unsplash.jpg");
         filter: blur(200px);
         z-index: 1;
     }
@@ -216,7 +215,7 @@
                 $(`<div class = "message-bubble-user"><p class = "message-text">${query}</p></div>`);
             chat_window.append(messageElement);
             chat_input.val('');
-            chat_window.animate({screenTop: chat_window.prop('scrollHeight')}, 500); // scrollHeight is the height of entire chat window
+            chat_window.animate({scrollTop: chat_window.prop('scrollHeight')}, 1500); // scrollHeight is the height of entire chat window
         }
 
         function addAIMessage(message) {
@@ -224,7 +223,7 @@
                 $(`<div class = "message-bubble-ai"><p class = "message-text">${message}</p></div>`);
             chat_window.append(messageElement);
             chat_input.val('');
-            chat_window.animate({screenTop: chat_window.prop('scrollHeight')}, 500); // scrollHeight is the height of entire chat window
+            chat_window.animate({scrollTop: chat_window.prop('scrollHeight')}, 1500); // scrollHeight is the height of entire chat window
         }
 
         chat_btn.click(function () {
@@ -260,3 +259,5 @@
     });
 </script>
 </html>
+
+<!-- CITE: https://codepen.io/supah/pen/jqOBqp -->
